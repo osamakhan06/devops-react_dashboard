@@ -15,30 +15,6 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
-            steps {
-                sh '''
-                    docker run --rm \
-                    -v "$WORKSPACE:/app" \
-                    -w /app \
-                    node:22-alpine \
-                    npm ci
-                '''
-            }
-        }
-
-        stage('Build React App') {
-            steps {
-                sh '''
-                    docker run --rm \
-                    -v "$WORKSPACE:/app" \
-                    -w /app \
-                    node:22-alpine \
-                    npm run build
-                '''
-            }
-        }
-
         stage('Docker Build') {
             steps {
                 sh '''
@@ -80,7 +56,7 @@ pipeline {
 
     post {
         success {
-            echo 'React application successfully built and pushed to Docker Hub!'
+            echo 'React Docker image successfully pushed to Docker Hub!'
         }
 
         failure {
